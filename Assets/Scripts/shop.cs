@@ -18,6 +18,8 @@ public class shop : MonoBehaviour
     private int damageUpgrades = 0;
     private int fireRateUpgrades = 0;
 
+    private Text moneyCounter;
+
     public playerWeapon currentWeapon;
 
     public playerWeapon pistol = new playerWeapon("Pistol", 0.5f, 0.5f, 5);
@@ -87,6 +89,7 @@ public class shop : MonoBehaviour
         
         damageUpgradeButton.interactable = false;
         fireRateUpgradeButton.interactable = false;
+        weaponUpgradeButton.interactable = false;
 
         weapons[0] = pistol;
         weapons[1] = smg;
@@ -94,6 +97,8 @@ public class shop : MonoBehaviour
         weapons[3] = lmg;
 
         currentWeapon = weapons[weaponIndex];
+
+        moneyCounter = GameObject.Find("Canvas").GetComponentInChildren<Text>();
 
     }
 
@@ -108,7 +113,7 @@ public class shop : MonoBehaviour
             }
         }
 
-        if(money >= fireRateCost)
+        if(money >= fireRateCost && fireRateUpgrades < currentWeapon.numUpgrades)
         {
             if (currentWeapon.isFinalWeapon || fireRateUpgrades < currentWeapon.numUpgrades)
             {
@@ -119,8 +124,8 @@ public class shop : MonoBehaviour
         if(currentWeapon.weaponName != "LMG")
         {
             weaponUpgradeButton.enabled = true;
-            
-            if(money >= weaponUpgradeCost)
+
+            if (money >= weaponUpgradeCost && damageUpgrades == currentWeapon.numUpgrades && fireRateUpgrades == currentWeapon.numUpgrades)
             {
                 weaponUpgradeButton.interactable = true;
             }
@@ -134,35 +139,71 @@ public class shop : MonoBehaviour
     void addMoney(float earnedMoney)
     {
         money += earnedMoney;
+
+        moneyCounter.text = "Money: " + money;
     }
 
-    void upgradeDamage()
+    public void upgradeDamage()
     {
         if(money >= damageCost)
         {
             currentWeapon.currentDamage += 0.2f;
+
+            money -= damageCost;
+
+            damageCost += damageCost / 4;
+
+            damageUpgrades++;
+
+            damageUpgradeButton.GetComponentInChildren<Text>().text = "Damage Upgrade Cost: " + damageCost;
+
+            damageUpgradeButton.interactable = false;
+
+            moneyCounter.text = "Money: " + money;
         }
 
-        damageCost += damageCost / 4;
+        
     }
 
-    void upgradeFireRate()
+    public void upgradeFireRate()
     {
         if(money >= fireRateCost)
         {
             currentWeapon.currentFireRate += 0.2f;
+
+            money -= fireRateCost;
+
+            fireRateCost += fireRateCost / 4;
+
+            fireRateUpgrades++;
+
+            fireRateUpgradeButton.GetComponentInChildren<Text>().text = "Fire Rate Upgrade Cost: " + fireRateCost;
+
+            fireRateUpgradeButton.interactable = false;
+
+            moneyCounter.text = "money: " + money;
         }
 
-        fireRateCost += fireRateCost / 4;
+        
     }
 
-    void upgradeWeapon()
+    public void upgradeWeapon()
     {
         if(money >= weaponUpgradeCost)
         {
             weaponIndex++;
 
             currentWeapon = weapons[weaponIndex];
+
+            money -= weaponUpgradeCost;
+
+            weaponUpgradeCost += weaponUpgradeCost / 4;
+
+            weaponUpgradeButton.GetComponentInChildren<Text>().text = "Upgrade Weapon Cost: " + weaponUpgradeCost;
+
+            weaponUpgradeButton.interactable = false;
+
+            moneyCounter.text = "Money: " + money;
         }
     }
 }

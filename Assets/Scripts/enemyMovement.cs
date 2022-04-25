@@ -34,6 +34,6 @@ public class enemyMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
-        currentPosition = Vector3.MoveTowards(currentPosition, currentPosition - new Vector3(0.0f, 0.0f, 0.2f), 0.2f);
+        currentPosition = Vector3.MoveTowards(currentPosition, currentPosition - new Vector3(0.0f, 0.0f, 0.6f), 0.6f);
     }
 }

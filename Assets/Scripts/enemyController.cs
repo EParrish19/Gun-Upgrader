@@ -31,6 +31,7 @@ public class enemyController : MonoBehaviour
             if (timeSinceLastincrease >= timeThreshhold)
             {
                 currentLevel += 1;
+                timeSinceLastincrease = 0.0f;
     
             if (currentLevel == 100) {
                     maxLevel = true;

@@ -14,13 +14,20 @@ public class playerShoot : MonoBehaviour
 
     private float time;
 
+    private LineRenderer shotTracer;
+
     private void Start()
     {
         time = 0.0f;
+
+        shotTracer = gameObject.GetComponent<LineRenderer>();
+
+        shotTracer.startColor = Color.red;
+        shotTracer.endColor = Color.red;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         shootSpeed = 1.0f / playerStats.currentWeapon.currentFireRate;
 
@@ -34,13 +41,21 @@ public class playerShoot : MonoBehaviour
 
             RaycastHit shot;
 
-            Ray ray = Camera.main.ViewportPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out shot))
             {
+
+                Debug.DrawRay(ray.origin, ray.direction, Color.red);
+
+                Vector3[] positions = new Vector3[2] { ray.origin, shot.transform.position };
+
+                shotTracer.SetPositions(positions);
+                Invoke("resetShotTracer", shootSpeed);
+
                 GameObject target = shot.transform.gameObject;
 
-                if(target.name == "enemy")
+                if(target.tag == "enemy")
                 {
                     target.SendMessage("takeDamage", shotDamage);
                 }
@@ -48,5 +63,13 @@ public class playerShoot : MonoBehaviour
         }
 
 
+    }
+
+    void resetShotTracer()
+    {
+       for(int i = 0; i < shotTracer.positionCount; i++)
+        {
+            shotTracer.SetPosition(i, new Vector3(0.0f, 0.0f, 0.0f));
+        }
     }
 }
