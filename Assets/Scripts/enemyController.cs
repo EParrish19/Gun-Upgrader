@@ -12,6 +12,7 @@ public class enemyController : MonoBehaviour
     private float timeSinceLastincrease;
 
     private bool maxLevel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +30,7 @@ public class enemyController : MonoBehaviour
 
             if (timeSinceLastincrease >= timeThreshhold)
             {
-                currentLevel += 1
+                currentLevel += 1;
     
             if (currentLevel == 100) {
                     maxLevel = true;

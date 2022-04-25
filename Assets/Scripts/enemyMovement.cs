@@ -8,13 +8,16 @@ public class enemyMovement : MonoBehaviour
 
     Vector3 targetPosition;
 
-    [SerializeField]
     Transform target;
 
+    private enemySpawn spawner;
     // Start is called before the first frame update
     void Start()
     {
-        currentPosition = gameObject.transform.position;
+        target = Camera.main.gameObject.transform;
+
+        spawner = GameObject.Find("enemySpawner").GetComponent<enemySpawn>();
+
         targetPosition = target.position;
         
     }
@@ -22,9 +25,13 @@ public class enemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentPosition = gameObject.transform.position;
+
         if (currentPosition.z <= targetPosition.z)
         {
-            SendMessage("ResetHealth");
+
+            spawner.SendMessage("enemyKilled");
+            Destroy(gameObject);
         }
 
         currentPosition = Vector3.MoveTowards(currentPosition, currentPosition - new Vector3(0.0f, 0.0f, 0.2f), 0.2f);

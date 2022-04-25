@@ -18,7 +18,7 @@ public class shop : MonoBehaviour
     private int damageUpgrades = 0;
     private int fireRateUpgrades = 0;
 
-    private playerWeapon currentWeapon;
+    public playerWeapon currentWeapon;
 
     public playerWeapon pistol = new playerWeapon("Pistol", 0.5f, 0.5f, 5);
     public playerWeapon smg = new playerWeapon("SMG", 2.0f, 2.0f, 10);
@@ -154,5 +154,15 @@ public class shop : MonoBehaviour
         }
 
         fireRateCost += fireRateCost / 4;
+    }
+
+    void upgradeWeapon()
+    {
+        if(money >= weaponUpgradeCost)
+        {
+            weaponIndex++;
+
+            currentWeapon = weapons[weaponIndex];
+        }
     }
 }
